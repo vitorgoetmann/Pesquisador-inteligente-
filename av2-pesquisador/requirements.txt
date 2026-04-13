@@ -1,0 +1,7 @@
+﻿Django>=4.2
+requests
+beautifulsoup4
+openai
+sumy
+python-dotenv
+openpyxl

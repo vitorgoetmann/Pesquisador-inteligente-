@@ -1,0 +1,48 @@
+{% extends "pesquisador_app/base.html" %}
+
+{% block title %}Historico de Buscas{% endblock %}
+{% block heading %}Historico de Buscas{% endblock %}
+{% block subtitle %}Acompanhe desempenho, resultados e acesse pesquisas anteriores rapidamente.{% endblock %}
+
+{% block content %}
+  <section class="panel reveal">
+    <div class="section-header">
+      <h3>Todas as buscas</h3>
+      <a href="{% url 'home' %}" class="btn btn-primary">Nova busca</a>
+    </div>
+
+    <div class="query-table-wrap">
+      <table class="query-table">
+        <thead>
+          <tr>
+            <th>Tema</th>
+            <th>Data</th>
+            <th>Artigos</th>
+            <th>Resumos validos</th>
+            <th>Acoes</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for q in queries %}
+            <tr>
+              <td>{{ q.termo }}</td>
+              <td>{{ q.created_at|date:"d/m/Y H:i" }}</td>
+              <td>{{ q.total_articles }}</td>
+              <td>{{ q.valid_summaries }}</td>
+              <td class="table-actions">
+                <a href="{% url 'results' q.id %}" class="btn btn-secondary">Abrir</a>
+                <form action="{% url 'delete_query' q.id %}" method="post" class="inline-form">{% csrf_token %}
+                  <button type="submit" class="btn btn-danger">Excluir</button>
+                </form>
+              </td>
+            </tr>
+          {% empty %}
+            <tr>
+              <td colspan="5" class="empty-state">Nenhuma busca registrada.</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </section>
+{% endblock %}
