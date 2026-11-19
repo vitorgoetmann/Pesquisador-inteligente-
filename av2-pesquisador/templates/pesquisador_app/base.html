@@ -1,0 +1,40 @@
+{% load static %}
+<!doctype html>
+<html lang="pt-br">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>{% block title %}Pesquisador Inteligente{% endblock %}</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Source+Sans+3:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{% static 'pesquisador_app/css/style.css' %}">
+</head>
+<body>
+<div class="page-shell">
+  <div class="ambient-shape shape-1"></div>
+  <div class="ambient-shape shape-2"></div>
+  <div class="ambient-shape shape-3"></div>
+
+  <div class="container">
+    <header class="top-header">
+      <div>
+        <p class="kicker">Monitor de Conteudo</p>
+        <h1>{% block heading %}Pesquisador Inteligente{% endblock %}</h1>
+        <p class="subtitle">{% block subtitle %}Busca automatizada com resultados resumidos e organizados.{% endblock %}</p>
+      </div>
+      <div class="header-actions app-nav reveal">
+        <a class="btn btn-secondary" href="{% url 'home' %}">Inicio</a>
+        <a class="btn btn-secondary" href="{% url 'queries' %}">Historico</a>
+        <a class="btn btn-secondary" href="/admin/">Admin</a>
+      </div>
+    </header>
+
+    <main>
+      {% block content %}{% endblock %}
+    </main>
+  </div>
+</div>
+<script src="{% static 'pesquisador_app/js/app.js' %}"></script>
+</body>
+</html>

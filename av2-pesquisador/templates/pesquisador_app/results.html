@@ -1,0 +1,46 @@
+﻿{% extends "pesquisador_app/base.html" %}
+
+{% block title %}Resultados - {{ query.termo }}{% endblock %}
+{% block heading %}{{ query.termo }}{% endblock %}
+{% block subtitle %}Somente artigos com resumo válido e leitura organizada.{% endblock %}
+
+{% block content %}
+  <section class="results-actions reveal">
+    <a href="{% url 'home' %}" class="btn btn-secondary">Nova busca</a>
+    <a href="{% url 'queries' %}" class="btn btn-secondary">Ir para histórico</a>
+    <form action="{% url 'delete_query' query.id %}" method="post" class="inline-form">{% csrf_token %}
+      <button type="submit" class="btn btn-danger">Excluir busca</button>
+    </form>
+  </section>
+
+  <section class="articles">
+    {% for a in articles %}
+      <article class="card article-card reveal">
+        <h2>{{ a.title|default:"Sem título" }}</h2>
+        <p class="url">
+          <a href="{{ a.url }}" target="_blank" rel="noopener noreferrer">{{ a.url }}</a>
+        </p>
+
+        <div class="summary">
+          <h4>Resumo {% if a.summary %}<span class="method-chip">{{ a.summary.method }}</span>{% endif %}</h4>
+          {% if a.summary and a.summary.summary_text %}
+            <div class="summary-text js-paragraphize">{{ a.summary.summary_text|linebreaks }}</div>
+          {% else %}
+            <p><em>Resumo não disponível</em></p>
+          {% endif %}
+        </div>
+
+        {% if a.content %}
+          <details class="details-block">
+            <summary>Ver conteúdo completo</summary>
+            <div class="full-content js-paragraphize">
+              {{ a.content|truncatechars:3800|linebreaks }}
+            </div>
+          </details>
+        {% endif %}
+      </article>
+    {% empty %}
+      <p class="empty-state">Nenhum artigo com resumo válido foi encontrado para essa busca.</p>
+    {% endfor %}
+  </section>
+{% endblock %}

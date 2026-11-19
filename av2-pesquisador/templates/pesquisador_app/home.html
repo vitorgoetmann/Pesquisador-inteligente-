@@ -1,0 +1,41 @@
+﻿{% extends "pesquisador_app/base.html" %}
+
+{% block title %}Pesquisador Inteligente{% endblock %}
+{% block heading %}Pesquisador Inteligente{% endblock %}
+{% block subtitle %}Pesquise um tema e receba resumos automáticos mais limpos e organizados.{% endblock %}
+
+{% block content %}
+  <section class="panel search-panel reveal">
+    <div class="panel-heading">
+      <h2 class="panel-title">Nova Busca</h2>
+      <div class="hero-badge">Busca, filtra e resume com leitura clara</div>
+    </div>
+    <form action="{% url 'submit_search' %}" method="post" class="search-form">{% csrf_token %}
+      <input name="termo" placeholder="Ex: carros elétricos" required>
+      <button class="btn btn-primary" type="submit">Pesquisar</button>
+    </form>
+  </section>
+
+  <section class="panel recent reveal">
+    <div class="section-header">
+      <h3>Pesquisas recentes</h3>
+      <a href="{% url 'queries' %}" class="btn btn-secondary">Ver histórico completo</a>
+    </div>
+
+    <ul class="recent-list">
+      {% for q in queries %}
+        <li class="recent-item">
+          <a class="recent-link" href="{% url 'results' q.id %}">
+            <span class="recent-term">{{ q.termo }}</span>
+            <span class="recent-date">{{ q.created_at|date:"d/m/Y H:i" }} · {{ q.valid_summaries }} resumos válidos</span>
+          </a>
+          <form action="{% url 'delete_query' q.id %}" method="post" class="inline-form">{% csrf_token %}
+            <button type="submit" class="btn btn-danger">Excluir</button>
+          </form>
+        </li>
+      {% empty %}
+        <li class="empty-state">Sem pesquisas ainda.</li>
+      {% endfor %}
+    </ul>
+  </section>
+{% endblock %}
